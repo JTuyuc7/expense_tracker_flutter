@@ -38,6 +38,7 @@ class Chart extends StatelessWidget {
       margin: const EdgeInsets.all(16),
       padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 8),
       width: double.infinity,
+      // width: width / 2,
       height: 180,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(8),

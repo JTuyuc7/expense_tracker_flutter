@@ -1,7 +1,6 @@
-
-
 import 'package:expense_tracker/widgets/expenses.dart';
-import 'package:flutter/material.dart'; 
+import 'package:flutter/material.dart';
+// import 'package:flutter/services.dart';
 
 void main() {
   runApp(const MyApp());
@@ -23,7 +22,7 @@ var kDarkColorScheme = ColorScheme.fromSeed(
 var kAppBarTheme = const AppBarTheme().copyWith(
   backgroundColor: Colors.purple,
   foregroundColor: Colors.white,
-  centerTitle: true
+  centerTitle: true,
 );
 
 var kCardTheme = const CardThemeData().copyWith(
@@ -36,6 +35,13 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // WidgetsFlutterBinding.ensureInitialized();
+    // SystemChrome.setPreferredOrientations([
+    //   // DeviceOrientation.portraitUp,
+    //   // DeviceOrientation.portraitDown,
+    // ]).then( (fn) {
+    //   //* Add the run app here, so that the app runs only in portrait mode
+    // });
     return MaterialApp(
       title: 'Expense Tracker',
       darkTheme: ThemeData.dark().copyWith(
@@ -70,13 +76,10 @@ class MyApp extends StatelessWidget {
         textTheme: const TextTheme().copyWith(
           titleLarge: const TextStyle(
             fontSize: 18,
-            fontWeight: FontWeight.bold, 
+            fontWeight: FontWeight.bold,
             color: Colors.black,
           ),
-          bodyLarge: const TextStyle(
-            fontSize: 16,
-            color: Colors.black,
-          ),
+          bodyLarge: const TextStyle(fontSize: 16, color: Colors.black),
           bodyMedium: const TextStyle(
             fontSize: 14,
             color: Color.fromARGB(255, 131, 130, 130),

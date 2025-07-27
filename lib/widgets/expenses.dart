@@ -1,5 +1,3 @@
-
-
 import 'package:expense_tracker/widgets/chart/chart.dart';
 import 'package:expense_tracker/widgets/expenses_list/expenses_list.dart';
 import 'package:expense_tracker/models/expense.dart';
@@ -14,7 +12,6 @@ class Expenses extends StatefulWidget {
 }
 
 class _ExpensesState extends State<Expenses> {
-
   final List<Expense> _registeredExpenses = [
     Expense(
       title: 'Groceries',
@@ -50,14 +47,13 @@ class _ExpensesState extends State<Expenses> {
 
   _openAddExpenseModal() {
     showModalBottomSheet(
+      useSafeArea: true,
       isScrollControlled: true,
       context: context,
       builder: (ctx) {
         return Container(
-          height: 400,
-          child: Center(
-            child: NewExpense(onAddExpense: _addExpense)
-          ),
+          height: double.infinity,
+          child: Center(child: NewExpense(onAddExpense: _addExpense)),
         );
       },
     );
@@ -83,6 +79,13 @@ class _ExpensesState extends State<Expenses> {
 
   @override
   Widget build(BuildContext context) {
+    final width = MediaQuery.of(context)
+        .size
+        .width; // This line is used to adjust the bottom padding when the keyboard is open
+    final height = MediaQuery.of(context)
+        .size
+        .height; // This line is used to adjust the bottom padding when the keyboard is open
+
     return Scaffold(
       appBar: AppBar(
         title: const Text('Expenses'),
@@ -94,20 +97,54 @@ class _ExpensesState extends State<Expenses> {
               _openAddExpenseModal();
             },
           ),
-
         ],
       ),
-      body: Column(
-        children: [
-          Chart(expenses: _registeredExpenses),
-          Text(_registeredExpenses.isEmpty
-              ? 'No expenses added yet!'
-              : 'You have ${_registeredExpenses.length} expenses.'),
-          Expanded(
-            child: ExpensesList(expenses: _registeredExpenses, onRemoveExpense: _removeExpense, onUndoRemoveExpense: _undoRemoveExpense),
-          ),
-        ]
-      ),
+      body: width > 600
+          ? Row(
+              children: [
+                Expanded(child: Chart(expenses: _registeredExpenses)),
+                Expanded(child: Column(
+                    children: [
+                      Text(
+                        _registeredExpenses.isEmpty
+                            ? 'No expenses added yet!'
+                            : 'You have ${_registeredExpenses.length} expenses.',
+                      ),
+                      Expanded(
+                        child: ExpensesList(
+                          expenses: _registeredExpenses,
+                          onRemoveExpense: _removeExpense,
+                          onUndoRemoveExpense: _undoRemoveExpense,
+                        ),
+                      ),
+                    ],
+                  ),
+                )
+              ],
+            )
+          : Column(
+              children: [
+                Chart(expenses: _registeredExpenses),
+                // Expanded(
+                //   child: Text(
+                //     _registeredExpenses.isEmpty
+                //         ? 'No expenses added yet!'
+                //         : 'You have ${_registeredExpenses.length} expenses.',
+                //   ),
+                // ),
+                Text(
+                  'You have ${_registeredExpenses.length} expenses.',
+                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                ),
+                Expanded(
+                  child: ExpensesList(
+                    expenses: _registeredExpenses,
+                    onRemoveExpense: _removeExpense,
+                    onUndoRemoveExpense: _undoRemoveExpense,
+                  ),
+                ),
+              ],
+            ),
     );
   }
 }
